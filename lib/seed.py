@@ -1,9 +1,10 @@
 #seed.py
-from models import Restaurant, Customer, Review,session
+from models import Restaurant, Customer, Review,restaurants_customers,session
 
 session.query(Restaurant).delete()
 session.query(Customer).delete()
 session.query(Review).delete()
+session.query(restaurants_customers).delete()
 
 session.commit()
 
@@ -120,3 +121,21 @@ review_info=[
 ]
 session.add_all([Review(**review) for review in review_info])
 session.commit()
+data=[
+  {"id": 1, "restaurant_id": 5, "customer_id": 3},
+  {"id": 2, "restaurant_id": 8, "customer_id": 7},
+  {"id": 3, "restaurant_id": 2, "customer_id": 1},
+  {"id": 4, "restaurant_id": 6, "customer_id": 9},
+  {"id": 5, "restaurant_id": 3, "customer_id": 2},
+  {"id": 6, "restaurant_id": 9, "customer_id": 8},
+  {"id": 7, "restaurant_id": 1, "customer_id": 4},
+  {"id": 8, "restaurant_id": 7, "customer_id": 6},
+  {"id": 9, "restaurant_id": 4, "customer_id": 10},
+  {"id": 10, "restaurant_id": 10, "customer_id": 5}
+]
+for entry in data:
+    restaurant = session.query(Restaurant).filter_by(id=entry["restaurant_id"]).first()
+    customer = session.query(Customer).filter_by(id=entry["customer_id"]).first()
+    restaurant.customers.append(customer)
+session.commit()
+

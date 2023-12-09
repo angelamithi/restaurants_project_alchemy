@@ -31,7 +31,12 @@ class Review(Base):
     rating=Column(Float())
     customer_id=Column(Integer(), ForeignKey('customers.id'))
     restaurant_id=Column(Integer(),ForeignKey('restaurants.id'))
-     
+
+    def customer(self):
+        return self.customer_id
+    def restaurant(self):
+        return self.restaurant_id
+    
 restaurants_customers=Table(
     'restaurants_customers',
     Base.metadata,
@@ -48,3 +53,4 @@ Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 Session=sessionmaker(bind=engine)
 session=Session()
+
